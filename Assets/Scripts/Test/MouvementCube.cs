@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MouvementCube : MonoBehaviour
 {
+    //DÉCLARATION DE VARIABLES
     [SerializeField] private float vitesseDeplacement;
 
 	[SerializeField] private float vitesseRotation;
@@ -18,6 +19,8 @@ public class MouvementCube : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        //DÉPLACEMENT
         float axeH = Input.GetAxis("Horizontal");//Valeur entre 1 0 et -1 progressif
         float axeV = Input.GetAxis("Vertical");
 
