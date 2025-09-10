@@ -1,59 +1,71 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeplacementHelico : MonoBehaviour
 {
-    //Il faut que l'hélico avance/recule progressivement et monte/descend selon une fraction de la vitesse à laquelle il avance et il ne doit pas
-    //dépasser la vitesse max. Il doit pouvoir avancer seulement si le moteur est en marche (ref à l'autre script). Voir comment utiliser RelativeTorque
-    //car on doit l'utiliser pour faire avancer et monter (syntaxe).
+    //Déclaration de variables
+    //Vitesse : 
+    [SerializeField] private float vitesseTourne;
 
-    //DÉCLARATION DE VARIABLES
-    [SerializeField] GameObject refHéliceAvant;
+    [SerializeField] private float vitesseAvant;
 
-    [SerializeField] float vitesseAvant;
+    [SerializeField] private float vitesseAvantMax;
 
-    [SerializeField] float vitesseAvantMax;
+    [SerializeField] private float vitesseMonte;
 
-    [SerializeField] float vitesseTourne;
+    public GameObject RefHelice;//Hélice avant (afin de l'utiliser comme référence pour savoir si le moteur est en marche)
 
-    [SerializeField] float vitesseMonte;
+    private Rigidbody rb;//Physique
 
-    private Rigidbody rb;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //Faire une variable pour utiliser le Rigidbody plus rapidement
         rb = GetComponent<Rigidbody>();
-
-        refHéliceAvant.moteurEnMarche = false;
-        Debug.Log(refHéliceAvant.moteurEnMarche);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        float axeH = Input.GetAxis("Horizontal");//Rotation, valeur entre -1 et 1
-        float axeV = Input.GetAxis("Vertical");//Monter/descendre
+        //Détection de touches
+        float axeH = Input.GetAxis("Horizontal");// valeur entre -1 et 1
+        float axeV = Input.GetAxis("Vertical");
 
-        rb.AddRelativeTorque(0f, axeH * vitesseTourne, 0f);
-        Avancer();
-        //rb.AddRelativeForce(0f, (axeH * vitesseAvant) * (0.5 * (axeH * vitesseMonte)), 0f);
+        //Vérifier si le moteur est allumé
+        bool moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;//Récupérer la variables
+
+ 
+        //Déplacement de l'hélico
+        if (moteurEnMarche == true)//Si le moteur est en marche
+        {
+            rb.useGravity = false;//Désactiver la gravité
+
+            //Vitesse avant
+            if (vitesseAvant < vitesseAvantMax)//Si vitesse avant est plus petite que la vitesse max
+            {
+                vitesseAvant += 10f;//Augmenter la vitesse par bon de 10
+            }
+            else
+            {
+                if (vitesseAvant >= vitesseAvantMax)//Si la vitesse est au max
+                {
+                    vitesseAvant = vitesseAvantMax;//Garder la vitesse à 10000
+                }
+            }
+
+            //Vitesse monte
+            vitesseMonte = 0.5f * vitesseAvant;//0.5 fois plus que la vitesse avant
+
+            //Rotation de l'hélico Y
+            rb.AddRelativeTorque(0f, axeH * vitesseTourne, 0f);
+
+            //Déplacement de l'hélico Y et Z
+            rb.AddRelativeForce(0f, axeV * vitesseMonte, axeV * vitesseAvant);
+        }
+        else//Si le moteur n'est pas en marche
+        {
+            rb.useGravity = true;//Activer la gravité et empêcher de bouger
+        }
+
+
     }
 
-    private void Avancer(){
-        //Augmenter la vitesse si on appuie sur E
-        if(Input.GetKeyDown(KeyCode.E)){
-            vitesseAvant ++;
-        }
 
-        //Maintenir la vitesse à la vitesse max
-        if(vitesseAvant == vitesseAvantMax){
-            vitesseAvant = vitesseAvantMax;
-        }
-
-        //Diminuer la vitesse jusqu'à 0
-        if(Input.GetKeyDown(KeyCode.Q)){
-            vitesseAvant --;
-        }
-    }
 }
