@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraSuiviFluide : MonoBehaviour
+public class Camera3ePersonne : MonoBehaviour
 {
     //DÉCLARATION DE VARIABLES
     [SerializeField] GameObject CibleASuivre;// la cible est déterminée dans l'inspecteur

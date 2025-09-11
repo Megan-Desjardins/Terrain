@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFixe : MonoBehaviour
+public class CameraSurveillance : MonoBehaviour
 {
     //DÉCLARATION DE VARIABLES
     //Sélectionner juste les propritées de transform de l'objet au lieu de tout l'objet permet d'optimiser

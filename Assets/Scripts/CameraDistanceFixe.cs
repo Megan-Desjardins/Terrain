@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraDistanceConstante : MonoBehaviour
+public class CameraDistanceFixe : MonoBehaviour
 {
     //DÉCLARATION DE VARIABLES
     [SerializeField] private GameObject CibleASuivre;
