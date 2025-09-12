@@ -4,7 +4,7 @@ public class MouvementHelices : MonoBehaviour
 {
     //Déclaration de vriables
 
-    public Vector3 vitesseRotation; //Vector(0,0,0 au départ
+    public Vector3 vitesseRotation; //Vector(0,0,0) au départ
 
     public bool moteurEnMarche;//Variable bool par défaut : false
 

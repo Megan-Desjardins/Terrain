@@ -17,6 +17,10 @@ public class DeplacementHelico : MonoBehaviour
 
     private Rigidbody rb;//Physique
 
+    [SerializeField] private Vector3 vitesseRotation;//Vitesse de rotation de l'hélice
+
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,8 +32,9 @@ public class DeplacementHelico : MonoBehaviour
         float axeH = Input.GetAxis("Horizontal");// valeur entre -1 et 1
         float axeV = Input.GetAxis("Vertical");
 
-        //Vérifier si le moteur est allumé
-        bool moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;//Récupérer la variables
+        //Vérifier si le moteur est allumé et vitesse des hélices
+        bool moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;//Récupérer la variable bool (si le moteur est en marche ou non)
+        vitesseRotation = RefHelice.GetComponent<MouvementHelices>().vitesseRotation;//Récupérer la vitesse de rotation des hélices
 
  
         //Déplacement de l'hélico
@@ -58,6 +63,15 @@ public class DeplacementHelico : MonoBehaviour
 
             //Déplacement de l'hélico Y et Z
             rb.AddRelativeForce(0f, axeV * vitesseMonte, axeV * vitesseAvant);
+
+            //Audio 
+            if(GetComponent<AudioSource>().isPlaying == false)//Si le son ne joue pas
+            {
+                //print("Jouer le son");
+                InvokeRepeating("AjustementVolume", 0.1f, 0.1f);
+            }
+
+
         }
         else//Si le moteur n'est pas en marche
         {
@@ -65,6 +79,19 @@ public class DeplacementHelico : MonoBehaviour
         }
 
 
+    }
+
+    //Fonction pour ajuster le volume
+    void AjustementVolume()
+    {
+        GetComponent<AudioSource>().volume = vitesseRotation.y / 1200f;//On augmente/diminue le volume selon la vitesse de rotation des hélices (divisée par 1200 car le volume max est 1 et la vitesse max des hélices est 1200)
+
+        //Optimisation -> Stopper tous les invoke et si on veut juste en cancel 1 on met la fonction dans les ()
+        if(GetComponent<AudioSource>().volume >= 1)
+        {
+            //print("Fin du invoke du volume");
+            CancelInvoke();
+        }
     }
 
 
