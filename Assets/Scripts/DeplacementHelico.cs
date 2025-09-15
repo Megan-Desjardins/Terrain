@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DeplacementHelico : MonoBehaviour
 {
-    //Déclaration de variables
+    //DÉCLARATION DE VARIABLES
     //Vitesse : 
     [SerializeField] private float vitesseTourne;
 
@@ -28,7 +28,7 @@ public class DeplacementHelico : MonoBehaviour
 
     void FixedUpdate()
     {
-        //Détection de touches
+        //DÉTECTION DE TOUCHES VERTICAL - HORIZONTAL
         float axeH = Input.GetAxis("Horizontal");// valeur entre -1 et 1
         float axeV = Input.GetAxis("Vertical");
 
@@ -37,8 +37,8 @@ public class DeplacementHelico : MonoBehaviour
         vitesseRotation = RefHelice.GetComponent<MouvementHelices>().vitesseRotation;//Récupérer la vitesse de rotation des hélices
 
  
-        //Déplacement de l'hélico
-        if (moteurEnMarche == true)//Si le moteur est en marche
+        //DÉPLACEMENT ET SONS HÉLICO
+        if (moteurEnMarche == true)//Si le MOTEUR EN MARCHE
         {
             rb.useGravity = false;//Désactiver la gravité
 
@@ -67,27 +67,35 @@ public class DeplacementHelico : MonoBehaviour
             //Audio 
             if(GetComponent<AudioSource>().isPlaying == false)//Si le son ne joue pas
             {
-                //print("Jouer le son");
-                InvokeRepeating("AjustementVolume", 0.1f, 0.1f);
+                //print("Augmenter volume");
+                InvokeRepeating("AjustementVolume", 0.1f, 0.05f);
+                //Jouer le son
+                GetComponent<AudioSource>().Play();
             }
 
 
         }
-        else//Si le moteur n'est pas en marche
+        else//Si le moteur PAS EN MARCHE
         {
             rb.useGravity = true;//Activer la gravité et empêcher de bouger
+            //print("Diminuer volume");
+            InvokeRepeating("AjustementVolume", 0.1f, 0.05f);
         }
 
 
     }
 
-    //Fonction pour ajuster le volume
+    //FONCTION AJUSTEMENTVOLUME
     void AjustementVolume()
     {
-        GetComponent<AudioSource>().volume = vitesseRotation.y / 1200f;//On augmente/diminue le volume selon la vitesse de rotation des hélices (divisée par 1200 car le volume max est 1 et la vitesse max des hélices est 1200)
+        //On ajuste le volume selon la vitesse rotation des hélices (/1200 car le volume max = 1 et la vitesse max hélices = 1200)
+        GetComponent<AudioSource>().volume = vitesseRotation.y / 1200f;
+        //On ajuste le pitch selon la vitesse rotation des hélices (0.5f pour commence à 0.5 et /2400 car le pitch doit arriver à 1 en même temps que le volume 
+        //mais vue qu'il commence à 0.5, il doit augmenter moins vite (multiplier par un plus gros nb)
+        GetComponent<AudioSource>().pitch = 0.5f + (vitesseRotation.y / (2400f));
 
-        //Optimisation -> Stopper tous les invoke et si on veut juste en cancel 1 on met la fonction dans les ()
-        if(GetComponent<AudioSource>().volume >= 1)
+        //Optimisation -> Stopper tous les invoke (si on veut juste en cancel 1 on met la fonction dans les () )
+        if (GetComponent<AudioSource>().volume >= 1)
         {
             //print("Fin du invoke du volume");
             CancelInvoke();
