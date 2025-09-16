@@ -26,16 +26,19 @@ public class ControleSons : MonoBehaviour
     {
 
 
-        //Mettre sur pause le son
-        if(Input.GetKeyDown(KeyCode.Space))//Détection de touche
+        //METTRE SUR MUTE
+        if(Input.GetKeyDown(KeyCode.M))//Détection de touche
         {
-            if(GetComponent<AudioSource>().isPlaying == true)//Si le son joue
+            if (!AudioListener.pause)//Si le son n'est pas à pause
+            { 
+                print("mute");
+                AudioListener.pause = true;//Pause
+            }
+            else//Si le son est à pause
             {
-                GetComponent<AudioSource>().Pause();//Pause
-            }   else
-                {
-                GetComponent<AudioSource>().Play();//Sinon, play
-                }
+                print("demute");
+                AudioListener.pause = false;//Jouer
+            }
         }
     }
 }
