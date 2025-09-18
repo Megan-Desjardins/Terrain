@@ -2,10 +2,16 @@ using UnityEngine;
 
 public class HelicoDetecteCollisions : MonoBehaviour
 {
+    //DÉCLARATION DE VARIABLES
+
+    private AudioSource audioSource;//Son
+
+    [SerializeField] AudioClip sonCollecte;//Son collecte
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -14,11 +20,16 @@ public class HelicoDetecteCollisions : MonoBehaviour
         
     }
 
+    //COLLISION
     void OnTriggerEnter(Collider infosCollider)
     {
-        if(infosCollider.gameObject.tag == "Ennemi")
+        if(infosCollider.gameObject.tag == "bidon")
         {
-            //infosCollider.gameObject.setActive = false;
+            //Debug.Log("Détruire objet");
+            Destroy(infosCollider.gameObject);
+
+            //Son collecte
+            audioSource.PlayOneShot(sonCollecte);
         }
     }
 }

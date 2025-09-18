@@ -26,7 +26,7 @@ public class ControleSons : MonoBehaviour
     {
 
 
-        //METTRE SUR MUTE
+        //METTRE SUR MUTE ///////////////
         if(Input.GetKeyDown(KeyCode.M))//Détection de touche
         {
             if (!AudioListener.pause)//Si le son n'est pas à pause

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour//Ne jamais voir plusieurs caméras actives en même temps
 {
-    //DÉCLARATION DE VARIABLES
+    //DÉCLARATION DE VARIABLES //////////////////
     [SerializeField] GameObject CameraFPS;
 
     [SerializeField] GameObject CameraSurveillance;
@@ -20,7 +20,7 @@ public class CameraManager : MonoBehaviour//Ne jamais voir plusieurs caméras act
     // Update is called once per frame
     void Update()
     {
-        //DÉTECTION DE TOUCHES
+        //DÉTECTION DE TOUCHES ///////////
         //Détection des touches pour changer la caméra active
         if(Input.GetKeyDown(KeyCode.Alpha1)) ChangeCamera(CameraFPS);
 
@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour//Ne jamais voir plusieurs caméras act
 
     private void ChangeCamera(GameObject laCamera)
     {
-        //GESTION CAMÉRAS
+        //GESTION CAMÉRAS //////////////
         //Désactiver la caméra
         Camera.main.gameObject.SetActive(false);
 

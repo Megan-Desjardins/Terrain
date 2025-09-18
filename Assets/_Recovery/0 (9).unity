@@ -1412,19 +1412,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1258466872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258466857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b697e4357d9dbf0418bf364f99f601e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HelicoDetecteCollisions
-  sonCollecte: {fileID: 8300000, guid: 72c0c4a68447d914884263aa1519ee6a, type: 3}
 --- !u!1 &1359046921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1862,9 +1849,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e07bd1869a49a134d8bdcd3ad128b34a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1258466864}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e07bd1869a49a134d8bdcd3ad128b34a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1258466872}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e07bd1869a49a134d8bdcd3ad128b34a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1258466868}

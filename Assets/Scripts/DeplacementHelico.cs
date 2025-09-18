@@ -1,46 +1,62 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeplacementHelico : MonoBehaviour
 {
-    //DÉCLARATION DE VARIABLES
+    //DÃ‰CLARATION DE VARIABLES (private par dÃ©faut) ///////////////////
     //Vitesse : 
-    [SerializeField] private float vitesseTourne;
+    [SerializeField] float vitesseTourne;
 
-    [SerializeField] private float vitesseAvant;
+    [SerializeField] float vitesseAvant;
 
-    [SerializeField] private float vitesseAvantMax;
+    [SerializeField] float vitesseAvantMax;
 
-    [SerializeField] private float vitesseMonte;
+    [SerializeField] float vitesseMonte;
 
-    public GameObject RefHelice;//Hélice avant (afin de l'utiliser comme référence pour savoir si le moteur est en marche)
+    public GameObject RefHelice;//HÃ©lice avant (afin de l'utiliser comme rÃ©fÃ©rence pour savoir si le moteur est en marche)
 
     private Rigidbody rb;//Physique
 
-    [SerializeField] private Vector3 vitesseRotation;//Vitesse de rotation de l'hélice
+    private AudioSource audioSource;//Son
+
+    [SerializeField] Vector3 vitesseRotation;//Vitesse de rotation de l'hÃ©lice
+
+    [SerializeField] bool moteurEnMarche;
+
+    //Explosion :
+    [SerializeField] GameObject fxExplosion;//fx Explosion
+
+    [SerializeField] AudioClip sonExplosion;//Son explosion
+
+    [SerializeField] GameObject lumiereOrange;//LumiÃ¨re orange
+
+    [SerializeField] GameObject CameraDistanceFixe;//CamÃ©ra fixe
+
 
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
     {
-        //DÉTECTION DE TOUCHES VERTICAL - HORIZONTAL
+        //DÃ‰TECTION DE TOUCHES VERTICAL - HORIZONTAL ///////////////
         float axeH = Input.GetAxis("Horizontal");// valeur entre -1 et 1
         float axeV = Input.GetAxis("Vertical");
 
-        //Vérifier si le moteur est allumé et vitesse des hélices
-        bool moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;//Récupérer la variable bool (si le moteur est en marche ou non)
-        vitesseRotation = RefHelice.GetComponent<MouvementHelices>().vitesseRotation;//Récupérer la vitesse de rotation des hélices
+        //VÃ©rifier si le moteur est allumÃ© et vitesse des hÃ©lices
+        moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;//Rï¿½cupï¿½rer la variable bool (si le moteur est en marche ou non)
+        vitesseRotation = RefHelice.GetComponent<MouvementHelices>().vitesseRotation;//Rï¿½cupï¿½rer la vitesse de rotation des hï¿½lices
 
  
-        //DÉPLACEMENT ET SONS HÉLICO
+        //DÃ‰PLACEMENT ET SONS HÃ‰LICO //////////////////////
         if (moteurEnMarche == true)//Si le MOTEUR EN MARCHE
         {
-            rb.useGravity = false;//Désactiver la gravité
+            rb.useGravity = false;//DÃ©sactiver la gravitÃ©
 
             //Vitesse avant
             if (vitesseAvant < vitesseAvantMax)//Si vitesse avant est plus petite que la vitesse max
@@ -51,33 +67,33 @@ public class DeplacementHelico : MonoBehaviour
             {
                 if (vitesseAvant >= vitesseAvantMax)//Si la vitesse est au max
                 {
-                    vitesseAvant = vitesseAvantMax;//Garder la vitesse à 10000
+                    vitesseAvant = vitesseAvantMax;//Garder la vitesse Ã  10000
                 }
             }
 
             //Vitesse monte
             vitesseMonte = 0.5f * vitesseAvant;//0.5 fois plus que la vitesse avant
 
-            //Rotation de l'hélico Y
+            //Rotation de l'hÃ©lico Y
             rb.AddRelativeTorque(0f, axeH * vitesseTourne, 0f);
 
-            //Déplacement de l'hélico Y et Z
+            //DÃ©placement de l'hÃ©lico Y et Z
             rb.AddRelativeForce(0f, axeV * vitesseMonte, axeV * vitesseAvant);
 
             //Audio 
-            if(GetComponent<AudioSource>().isPlaying == false)//Si le son ne joue pas
+            if(audioSource.isPlaying == false)//Si le son ne joue pas
             {
                 //print("Augmenter volume");
                 InvokeRepeating("AjustementVolume", 0.1f, 0.05f);
                 //Jouer le son
-                GetComponent<AudioSource>().Play();
+                audioSource.Play();
             }
 
 
         }
         else//Si le moteur PAS EN MARCHE
         {
-            rb.useGravity = true;//Activer la gravité et empêcher de bouger
+            rb.useGravity = true;//Activer la gravitÃ© et empÃªcher de bouger
             //print("Diminuer volume");
             InvokeRepeating("AjustementVolume", 0.1f, 0.05f);
         }
@@ -85,22 +101,72 @@ public class DeplacementHelico : MonoBehaviour
 
     }
 
-    //FONCTION AJUSTEMENTVOLUME
+    //FONCTION AJUSTEMENTVOLUME /////////////  
     void AjustementVolume()
     {
-        //On ajuste le volume selon la vitesse rotation des hélices (/1200 car le volume max = 1 et la vitesse max hélices = 1200)
-        GetComponent<AudioSource>().volume = vitesseRotation.y / 1200f;
-        //On ajuste le pitch selon la vitesse rotation des hélices (0.5f pour commence à 0.5 et /2400 car le pitch doit arriver à 1 en même temps que le volume 
-        //mais vue qu'il commence à 0.5, il doit augmenter moins vite (multiplier par un plus gros nb)
-        GetComponent<AudioSource>().pitch = 0.5f + (vitesseRotation.y / (2400f));
+        //On ajuste le volume selon la vitesse rotation des hÃ©lices (/1200 car le volume max = 1 et la vitesse max hï¿½lices = 1200)
+        audioSource.volume = vitesseRotation.y / 1200f;
+        //On ajuste le pitch selon la vitesse rotation des hÃ©lices (0.5f pour commence Ã  0.5 et /2400 car le pitch doit arriver ï¿½ 1 en mï¿½me temps que le volume 
+        //mais vue qu'il commence Ã  0.5, il doit augmenter moins vite (multiplier par un plus gros nb)
+       audioSource.pitch = 0.5f + (vitesseRotation.y / (2400f));
 
         //Optimisation -> Stopper tous les invoke (si on veut juste en cancel 1 on met la fonction dans les () )
-        if (GetComponent<AudioSource>().volume >= 1)
+        if (audioSource.volume >= 1)
         {
             //print("Fin du invoke du volume");
             CancelInvoke();
         }
     }
 
+    //COLLISION ///////////////////////
+    void OnCollisionEnter(Collision infosCollision)
+    {
+        if(infosCollision.gameObject.name == "Terrain")
+        {
+            //Explosion
+            Invoke("Explosion", 0f);
+        }
+    }
+
+    //fx EXPLOSION ///////////////////////
+    void Explosion()
+    {
+        //Effet d'explosion activÃ©
+        fxExplosion.SetActive(true);
+
+        //Son d'exploxion
+        audioSource.PlayOneShot(sonExplosion);
+
+        //LumiÃ¨re
+        lumiereOrange.SetActive(true);
+
+        //HÃ©lico tombe
+        moteurEnMarche = false;
+        rb.linearDamping = 0.1f;
+        rb.angularDamping = 0.5f;
+        rb.constraints = RigidbodyConstraints.None;//EnlÃ¨ve toutes les contraintes du rigidbody
+
+        //Activer camÃ©ra fixe
+        ChangeCamera(CameraDistanceFixe);
+
+        Invoke("Recommencer", 8f);
+    }
+
+    //SCÃˆNES //////////////////
+    void Recommencer()
+    {
+        SceneManager.LoadScene("Exercice");
+    }
+
+    //CHAGER DE CAMÃ‰RAS /////////////////
+    private void ChangeCamera(GameObject laCamera)
+    {
+        //GESTION CAMÃ‰RAS
+        //DÃ©sactiver la camÃ©ra
+        Camera.main.gameObject.SetActive(false);
+
+        //Activer la camÃ©ra sÃ©lectionner
+        laCamera.SetActive(true);
+    }
 
 }
