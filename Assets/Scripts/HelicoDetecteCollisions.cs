@@ -3,7 +3,6 @@ using UnityEngine;
 public class HelicoDetecteCollisions : MonoBehaviour
 {
     //DÉCLARATION DE VARIABLES
-
     private AudioSource audioSource;//Son
 
     [SerializeField] AudioClip sonCollecte;//Son collecte

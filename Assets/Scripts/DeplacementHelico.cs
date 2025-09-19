@@ -1,6 +1,5 @@
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DeplacementHelico : MonoBehaviour
 {
@@ -23,17 +22,6 @@ public class DeplacementHelico : MonoBehaviour
     [SerializeField] Vector3 vitesseRotation;//Vitesse de rotation de l'hélice
 
     [SerializeField] bool moteurEnMarche;
-
-    //Explosion :
-    [SerializeField] GameObject fxExplosion;//fx Explosion
-
-    [SerializeField] AudioClip sonExplosion;//Son explosion
-
-    [SerializeField] GameObject lumiereOrange;//Lumière orange
-
-    [SerializeField] GameObject CameraDistanceFixe;//Caméra fixe
-
-
 
 
     void Start()
@@ -116,57 +104,6 @@ public class DeplacementHelico : MonoBehaviour
             //print("Fin du invoke du volume");
             CancelInvoke();
         }
-    }
-
-    //COLLISION ///////////////////////
-    void OnCollisionEnter(Collision infosCollision)
-    {
-        if(infosCollision.gameObject.name == "Terrain")
-        {
-            //Explosion
-            Invoke("Explosion", 0f);
-        }
-    }
-
-    //fx EXPLOSION ///////////////////////
-    void Explosion()
-    {
-        //Effet d'explosion activé
-        fxExplosion.SetActive(true);
-
-        //Son d'exploxion
-        audioSource.PlayOneShot(sonExplosion);
-
-        //Lumière
-        lumiereOrange.SetActive(true);
-
-        //Hélico tombe
-        moteurEnMarche = false;
-        rb.linearDamping = 0.1f;
-        rb.angularDamping = 0.5f;
-        rb.constraints = RigidbodyConstraints.None;//Enlève toutes les contraintes du rigidbody
-
-        //Activer caméra fixe
-        ChangeCamera(CameraDistanceFixe);
-
-        Invoke("Recommencer", 8f);
-    }
-
-    //SCÈNES //////////////////
-    void Recommencer()
-    {
-        SceneManager.LoadScene("Exercice");
-    }
-
-    //CHAGER DE CAMÉRAS /////////////////
-    private void ChangeCamera(GameObject laCamera)
-    {
-        //GESTION CAMÉRAS
-        //Désactiver la caméra
-        Camera.main.gameObject.SetActive(false);
-
-        //Activer la caméra sélectionner
-        laCamera.SetActive(true);
     }
 
 }
