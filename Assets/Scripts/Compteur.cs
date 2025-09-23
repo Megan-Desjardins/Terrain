@@ -11,16 +11,16 @@ public class Compteur : MonoBehaviour
 
     public GameObject refHelico;
 
-    [SerializeField] ExplosionHelico refFonctionExplosion;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InvokeRepeating("CalculCompteur", 1, 1); //à chaque seconde appelle Compteur
-
-        refFonctionExplosion = refHelico.GetComponent<ExplosionHelico>();
+       
     }
 
+    void Update()
+    {
+
+    }
 
     //COMPTEUR /////////////
     void CalculCompteur()
@@ -34,7 +34,7 @@ public class Compteur : MonoBehaviour
             CancelInvoke();//Arrêter tous les invoke
 
             //Activer explosion
-            refFonctionExplosion.Explosion();
+            GetComponent<ExplosionHelico>().Explosion();
         }
     }
 }

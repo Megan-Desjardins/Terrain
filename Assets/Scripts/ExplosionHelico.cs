@@ -56,7 +56,7 @@ public class ExplosionHelico : MonoBehaviour
         fxExplosion.SetActive(true);
 
         //Son d'exploxion
-        audioSource.PlayOneShot(sonExplosion);
+        //audioSource.PlayOneShot(sonExplosion);
 
         //Lumière
         lumiereOrange.SetActive(true);

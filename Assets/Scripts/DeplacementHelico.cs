@@ -21,7 +21,7 @@ public class DeplacementHelico : MonoBehaviour
 
     [SerializeField] Vector3 vitesseRotation;//Vitesse de rotation de l'hélice
 
-    [SerializeField] bool moteurEnMarche;
+    public bool moteurEnMarche;
 
 
     void Start()

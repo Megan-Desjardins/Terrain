@@ -27,6 +27,11 @@ public class HelicoDetecteCollisions : MonoBehaviour
             //Debug.Log("Détruire objet");
             Destroy(infosCollider.gameObject);
 
+            //Ajouter de l'essence
+            GetComponent<GestionEssence>().quantiteEssenceActuelle = GetComponent<GestionEssence>().quantiteEssenceActuelle += 20f;
+            float essenceClamp = Mathf.Clamp(GetComponent<GestionEssence>().quantiteEssenceActuelle, 0f, 100f);
+            GetComponent<GestionEssence>().quantiteEssenceActuelle = essenceClamp;
+
             //Son collecte
             audioSource.PlayOneShot(sonCollecte);
         }
