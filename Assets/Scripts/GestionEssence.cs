@@ -8,7 +8,8 @@ public class GestionEssence : MonoBehaviour
     public float quantiteEssenceActuelle;
     [SerializeField] float consommationEssence;
     [SerializeField] Image barreEssence;
-
+    [SerializeField] bool moteurEnMarche;
+    public GameObject RefHelice;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,20 +21,25 @@ public class GestionEssence : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Vérifier si le moteur est allumé (récupéré variable moteurEnMarche)
+        moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;
     }
 
     //DIMINUER ESSENCE
     public void DiminutionEssence()
     {
-        //seulement si le moteur est allumé
-        quantiteEssenceActuelle -= consommationEssence;
-        barreEssence.fillAmount = quantiteEssenceActuelle / 100f;
+        if(moteurEnMarche == true)
+        {
+            quantiteEssenceActuelle -= consommationEssence;
+            barreEssence.fillAmount = quantiteEssenceActuelle / 100f;
+        }
+        
 
         if (quantiteEssenceActuelle <= 0)
         {
-            //CancelInvoke("DiminutionEssence");
-            //Explosion
+            CancelInvoke("DiminutionEssence");
+            //Activer explosion
+            GetComponent<ExplosionHelico>().Explosion();
         }
     }
 }

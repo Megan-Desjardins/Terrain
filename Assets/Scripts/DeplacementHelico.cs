@@ -43,12 +43,12 @@ public class DeplacementHelico : MonoBehaviour
         float axeV = Input.GetAxis("Vertical");
         float axeZ = 0f;
 
-        if (Input.GetKeyDown(KeyCode.Q))//Si appuie sur Q
+        if (Input.GetKey(KeyCode.Q))//Si maintien sur Q
         {
             axeZ = 10f;//Avancer (mutiliplier la vitesse avant positif = avancer)
         }
 
-        if (Input.GetKeyDown(KeyCode.E))//Si appuie sur E
+        if (Input.GetKey(KeyCode.E))//Si maintien sur E
         {
             axeZ = -10f;//Reculer (mutiliplier la vitesse avant négatif = reculer)
         }
@@ -79,7 +79,7 @@ public class DeplacementHelico : MonoBehaviour
             }
 
             //Vitesse monte
-            vitesseMonte = 0.5f * vitesseAvant;//0.5 fois plus que la vitesse avant
+            vitesseMonte = vitesseAvant;//= à la vitesse avant
 
             //Rotation de l'hélico Y
             rb.AddRelativeTorque(0f, axeH * vitesseTourne, 0f);
