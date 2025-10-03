@@ -13,14 +13,20 @@ public class DeplacementHelico : MonoBehaviour
 
     [SerializeField] float vitesseMonte;
 
-    public GameObject RefHelice;//Hélice avant (afin de l'utiliser comme référence pour savoir si le moteur est en marche)
+    //Hélice avant (afin de l'utiliser comme référence pour
+    //savoir si le moteur est en marche)
+    public GameObject RefHelice;
 
-    private Rigidbody rb;//Physique
+    //Physique
+    private Rigidbody rb;
 
-    private AudioSource audioSource;//Son
+    //Son
+    private AudioSource audioSource;
 
-    [SerializeField] Vector3 vitesseRotation;//Vitesse de rotation de l'hélice
-
+    //Vitesse de rotation de l'hélice
+    [SerializeField] Vector3 vitesseRotation;
+    
+    //Variable true false pour savoir si moteur en marche
     public bool moteurEnMarche;
 
 
@@ -32,15 +38,28 @@ public class DeplacementHelico : MonoBehaviour
 
     void FixedUpdate()
     {
-        //DÉTECTION DE TOUCHES VERTICAL - HORIZONTAL ///////////////
+        //DÉTECTION DE TOUCHES VERTICAL - HORIZONTAL - Z ///////////////
         float axeH = Input.GetAxis("Horizontal");// valeur entre -1 et 1
         float axeV = Input.GetAxis("Vertical");
+        float axeZ = 0f;
+
+        if (Input.GetKeyDown(KeyCode.Q))//Si appuie sur Q
+        {
+            axeZ = 10f;//Avancer (mutiliplier la vitesse avant positif = avancer)
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))//Si appuie sur E
+        {
+            axeZ = -10f;//Reculer (mutiliplier la vitesse avant négatif = reculer)
+        }
 
         //Vérifier si le moteur est allumé et vitesse des hélices
-        moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;//R�cup�rer la variable bool (si le moteur est en marche ou non)
-        vitesseRotation = RefHelice.GetComponent<MouvementHelices>().vitesseRotation;//R�cup�rer la vitesse de rotation des h�lices
+        //Récupérer la variable bool (si le moteur est en marche ou non)
+        moteurEnMarche = RefHelice.GetComponent<MouvementHelices>().moteurEnMarche;
+        //Récupérer la vitesse de rotation des hélices
+        vitesseRotation = RefHelice.GetComponent<MouvementHelices>().vitesseRotation;
 
- 
+
         //DÉPLACEMENT ET SONS HÉLICO //////////////////////
         if (moteurEnMarche == true)//Si le MOTEUR EN MARCHE
         {
@@ -65,8 +84,9 @@ public class DeplacementHelico : MonoBehaviour
             //Rotation de l'hélico Y
             rb.AddRelativeTorque(0f, axeH * vitesseTourne, 0f);
 
-            //Déplacement de l'hélico Y et Z
-            rb.AddRelativeForce(0f, axeV * vitesseMonte, axeV * vitesseAvant);
+            //Déplacement de l'hélico Y Z
+            rb.AddRelativeForce(0f, axeV * vitesseMonte, axeZ * vitesseAvant);
+
 
             //Audio 
             if(audioSource.isPlaying == false)//Si le son ne joue pas
@@ -92,13 +112,16 @@ public class DeplacementHelico : MonoBehaviour
     //FONCTION AJUSTEMENTVOLUME /////////////  
     void AjustementVolume()
     {
-        //On ajuste le volume selon la vitesse rotation des hélices (/1200 car le volume max = 1 et la vitesse max h�lices = 1200)
+        //On ajuste le volume selon la vitesse rotation des hélices
+        //(/1200 car le volume max = 1 et la vitesse max hélices = 1200)
         audioSource.volume = vitesseRotation.y / 1200f;
-        //On ajuste le pitch selon la vitesse rotation des hélices (0.5f pour commence à 0.5 et /2400 car le pitch doit arriver � 1 en m�me temps que le volume 
+        //On ajuste le pitch selon la vitesse rotation des hélices
+        //(0.5f pour commence à 0.5 et /2400 car le pitch doit arriver à 1 en même temps que le volume 
         //mais vue qu'il commence à 0.5, il doit augmenter moins vite (multiplier par un plus gros nb)
        audioSource.pitch = 0.5f + (vitesseRotation.y / (2400f));
 
-        //Optimisation -> Stopper tous les invoke (si on veut juste en cancel 1 on met la fonction dans les () )
+        //Optimisation -> Stopper tous les invoke
+        //(si on veut juste en cancel 1 on met la fonction dans les () )
         if (audioSource.volume >= 1)
         {
             //print("Fin du invoke du volume");

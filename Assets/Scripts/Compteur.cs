@@ -7,9 +7,7 @@ public class Compteur : MonoBehaviour
     //DÉCLARATION VARIABLES /////////////
     public TextMeshProUGUI zoneTexte;//texte à changer
 
-    public int valCompteur = 0;//valeur du compteur (0 au départ)
-
-    public GameObject refHelico;
+    public int valCompteur = 120;//valeur du compteur (120 au départ)
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,16 +23,28 @@ public class Compteur : MonoBehaviour
     //COMPTEUR /////////////
     void CalculCompteur()
     {
+        //Debug.Log("Diminuer valeur");
         valCompteur -= 1;
-        //convertit la valeur en texte et l'affiche
+
+        //Convertit la valeur en texte et l'affiche
         zoneTexte.text = valCompteur.ToString();
 
-        if(valCompteur <= 0)
+        if (valCompteur <= 0)//Si compteur = 0
         {
             CancelInvoke();//Arrêter tous les invoke
 
             //Activer explosion
             GetComponent<ExplosionHelico>().Explosion();
         }
+    }
+
+    public void DemarrerCompteur()
+    {
+        //Affiche valeur initiale (120)
+        zoneTexte.text = valCompteur.ToString();
+
+        //Appeler le compteur à chaque sec
+        InvokeRepeating("CalculCompteur", 1f, 1f);
+
     }
 }

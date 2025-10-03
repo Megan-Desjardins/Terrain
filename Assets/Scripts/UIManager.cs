@@ -22,7 +22,8 @@ public class UIManager : MonoBehaviour
     {
         helico.SetActive(true);//Activer l'hélico
         ChangeCamera(cameraFPS);//Activer la caméra FPS et désactiver la caméra active (distance fixe)
-        zoneTexte.gameObject.SetActive(true);//Activer le compteur (gameObject sinon il ne peux pas activer du texte)
+        zoneTexte.gameObject.SetActive(true);//Activer le txt compteur (gameObject sinon il ne peux pas activer du texte)
+        zoneTexte.gameObject.GetComponent<Compteur>().DemarrerCompteur();//Activer le compteur
 
         leTitre.SetActive(false);// Désactiver le titre
         lesTouches.SetActive(false);//Désactiver les touches
