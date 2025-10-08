@@ -9,6 +9,8 @@ public class Compteur : MonoBehaviour
 
     public int valCompteur = 120;//valeur du compteur (120 au départ)
 
+    [SerializeField] private ExplosionHelico scriptExplosion;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,10 +33,12 @@ public class Compteur : MonoBehaviour
 
         if (valCompteur <= 0)//Si compteur = 0
         {
-            CancelInvoke();//Arrêter tous les invoke
+            //Arrêter tous les invoke
+            CancelInvoke();
 
             //Activer explosion
-            GetComponent<ExplosionHelico>().Explosion();
+            //Debug.Log("Explosion");
+            scriptExplosion.Explosion();
         }
     }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HelicoDetecteCollisions : MonoBehaviour
 {
-    //DÉCLARATION DE VARIABLES
+    //DÉCLARATION DE VARIABLES ////////////////////
     private AudioSource audioSource;//Son
 
     [SerializeField] AudioClip sonCollecte;//Son collecte
@@ -19,10 +19,10 @@ public class HelicoDetecteCollisions : MonoBehaviour
         
     }
 
-    //COLLISION
+    //COLLISION //////////////////
     void OnTriggerEnter(Collider infosCollider)
     {
-        if(infosCollider.gameObject.tag == "bidon")
+        if(infosCollider.gameObject.tag == "bidon")//Détecte collision avec un bidon
         {
             //Debug.Log("Détruire objet");
             Destroy(infosCollider.gameObject);
@@ -34,6 +34,12 @@ public class HelicoDetecteCollisions : MonoBehaviour
 
             //Son collecte
             audioSource.PlayOneShot(sonCollecte);
+        }
+
+        if(infosCollider.gameObject.tag == "drone")//Détecte collision avec un drone
+        {
+            //Exploser hélico
+            GetComponent<ExplosionHelico>().Explosion();
         }
     }
 }

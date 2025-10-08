@@ -22,7 +22,7 @@ public class OuvertureDome : MonoBehaviour
             //Ouvrir le dome
             GetComponent<Animator>().Play("OuvertureDome");
             //Mettre à jour -> le dome est ouvert (attendre fin de l'animation)
-            Invoke("MettreJourDomeOuvert", 2f);
+            Invoke("MettreJourDomeOuvert", 3f);
 
         }
 
@@ -33,7 +33,7 @@ public class OuvertureDome : MonoBehaviour
             //Fermer le dome
             GetComponent<Animator>().Play("FermetureDome");
             //Mettre à jour -> le dome est fermer (attendre fin de l'animation)
-            Invoke("MettreJourDomeOuvert", 2f);
+            Invoke("MettreJourDomeOuvert", 3f);
         }
 
 
@@ -42,7 +42,7 @@ public class OuvertureDome : MonoBehaviour
     //FONCTION JOUER SON DU DOME
     void JouerSonDome()
     {
-        Debug.Log("Son du dome");
+        //Debug.Log("Son du dome");
         GetComponent<AudioSource>().Play();
     }
 
@@ -58,7 +58,5 @@ public class OuvertureDome : MonoBehaviour
             domeOuvert = false;
         }
     }
-
-    //Seulement quand le moteur est en marche
 
 }
